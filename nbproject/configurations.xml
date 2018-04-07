@@ -12,7 +12,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>rec.asm</itemPath>
       <itemPath>the2.asm</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -515,8 +514,6 @@
         <property key="extended-mode-mpasm" value="false"/>
         <property key="extended-mode-mplink" value="false"/>
       </mpasmsuite>
-      <item path="rec.asm" ex="true" overriding="false">
-      </item>
     </conf>
   </confs>
 </configurationDescriptor>
