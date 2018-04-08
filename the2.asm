@@ -107,7 +107,7 @@ init:
     movwf   paddlepos_2
     bsf	    LATD, 3	; initial ball position
 
-    movlw   d'21'	; set timer0's initial value
+    movlw   d'1'	; set timer0's initial value
     movwf   TMR0
 
     ;Initialize Timer0
@@ -357,15 +357,18 @@ _down:
 ;;;;;;;;;;;;;;;;;;;;;;;; Interrupt  Service  Routine  ;;;;;;;;;;;;;;;;;;;;;;;;;;
 isr:
 
-    incf	counter, f              ; increment counter variable
-    movf	counter, w              ; Move counter to working register
-    sublw	d'50'                   ; Decrement 50 from Working register
-    btfss	STATUS, Z               ; Is the result zero?
-    goto	isr_exit		; No, then exit from interrupt service routine
-    clrf	counter                 ; Yes, then clear counter variable
+    movlw	d'1'            ; 256-1=255; 255*256*46 = 3002880 instruction cycles;
+    movwf	TMR0
+    bcf		INTCON, 2       ; Clear TMROIF
+
+    incf	counter, f      ; increment counter variable
+    movf	counter, w      ; Move counter to working register
+    sublw	d'46'           ; Decrement 50 from Working register
+    btfss	STATUS, Z       ; Is the result zero?
+    goto	isr_exit	; No, then exit from interrupt service routine
+    clrf	counter         ; Yes, then clear counter variable
 
     ; change ball position vertically
-
     movf	direction, w		; move horizontally
     xorlw	0x00
     bz		_move
@@ -511,9 +514,6 @@ _move:
     	goto	isr_exit
 
 isr_exit:
-    bcf		INTCON, 2       ; Clear TMROIF
-    movlw	d'21'           ; 256-21=235; 235*256*50 = 3008000 instruction cycles;
-    movwf	TMR0
     retfie
 
 rg0_task:
